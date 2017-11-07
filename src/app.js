@@ -31,9 +31,11 @@ export class App {
   render() {
     return html`
       ${header}
-      <button on-click="${e => this._dec(e)}">-</button>
-      ${this.counter}
-      <button on-click="${e => this._inc(e)}">+</button>
+      <div class="content">
+        <button on-click="${e => this._dec(e)}">-</button>
+        <span>${this.counter}</span>
+        <button on-click="${e => this._inc(e)}">+</button>
+      </div>
     `;
   }
   
