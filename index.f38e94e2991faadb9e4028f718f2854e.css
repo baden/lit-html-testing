@@ -8,7 +8,13 @@ html, body {
 }
 
 .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;  
   align-items: center;
 }
 
@@ -24,4 +30,4 @@ button {
 }
 
 
-/*# sourceMappingURL=index.bd6cdacc4ecd80e97f8e67ad553f6025.css.map*/
+/*# sourceMappingURL=index.f38e94e2991faadb9e4028f718f2854e.css.map*/
