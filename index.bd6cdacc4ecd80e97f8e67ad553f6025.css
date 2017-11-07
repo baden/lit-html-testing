@@ -4,7 +4,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #acc;
+  background-color: #cca;
 }
 
 .content {
@@ -18,10 +18,10 @@ html, body {
 }
 
 button {
-  font-size: 4em;
+  font-size: 2em;
   padding-left: 20px;
   padding-right: 20px;
 }
 
 
-/*# sourceMappingURL=index.48d25f5a6031b304a57b2596ebc44f0f.css.map*/
+/*# sourceMappingURL=index.bd6cdacc4ecd80e97f8e67ad553f6025.css.map*/
