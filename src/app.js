@@ -1,7 +1,6 @@
-import { html, directive, render } from 'lit-html/lib/lit-extended';
+import { html, render } from 'lit-html/lib/lit-extended';
 // import { directive } from 'lit-html';
-
-console.log("directive=", directive);
+// console.log("directive=", directive);
 
 // const myComponent = (f) => directive((part) => {
 //   return f();
