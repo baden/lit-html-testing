@@ -23,7 +23,12 @@
   npm run deploy
 ```
 
-Open link: https://baden.github.io/lit-html-testing/
+Open link in your browser:
+<https://baden.github.io/lit-html-testing/> or <https://goo.gl/ebxre4>
+
+Or scan this code:
+
+![https://goo.gl/ebxre4](https://goo.gl/ebxre4.qr)
 
 ## Reports
 
