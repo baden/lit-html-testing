@@ -7,6 +7,16 @@ html, body {
   background-color: #acc;
 }
 
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.content span {
+  flex-grow: 1;
+  text-align: center;
+}
+
 button {
   font-size: 4em;
   padding-left: 20px;
@@ -14,4 +24,4 @@ button {
 }
 
 
-/*# sourceMappingURL=index.ba4a04dd2239a7d889f3c48226c0a101.css.map*/
+/*# sourceMappingURL=index.48d25f5a6031b304a57b2596ebc44f0f.css.map*/
