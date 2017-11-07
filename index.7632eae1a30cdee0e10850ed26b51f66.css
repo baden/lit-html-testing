@@ -4,7 +4,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #cac;
+  background-color: #acс;
 }
 
 .content {
@@ -20,6 +20,7 @@ html, body {
 
 .content span {
   flex-grow: 1;
+  -webkit-flex-grow: 1;
   text-align: center;
 }
 
@@ -30,4 +31,4 @@ button {
 }
 
 
-/*# sourceMappingURL=index.487ec4d0e46c76cb9041dc666b85c57e.css.map*/
+/*# sourceMappingURL=index.7632eae1a30cdee0e10850ed26b51f66.css.map*/
