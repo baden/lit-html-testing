@@ -11,10 +11,19 @@ module.exports = {
     filename: './bundle.js'
   },
   devtool: 'source-map',
-  watch: true,
   plugins: [
     new UglifyJSPlugin({ 
-      sourceMap: true
+      sourceMap: true,
+      uglifyOptions: {
+        // ie8: true,
+        // mangle: false,
+        compress: {
+          passes: 3
+        },
+        output: {
+          // beautify: true
+        }
+      }
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html'
