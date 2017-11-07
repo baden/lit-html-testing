@@ -5,16 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "webpack-dev-server -d --hot --watch",
-    "build": "webpack"
+    "build": "webpack",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@webcomponents/webcomponentsjs": "^1.0.17",
     "lit-html": "^0.7.1",
     "page": "^1.7.1"
   },
   "devDependencies": {
+    "gh-pages": "^1.0.0",
     "html-webpack-plugin": "^2.30.1",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "webpack": "^3.8.1",
