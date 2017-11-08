@@ -1,25 +1,18 @@
 import { html } from 'lit-html/lib/lit-extended';
 import { directive } from 'lit-html';
 import { until } from 'lit-html/lib/until';
-import { constructBase, isNg } from './base';
+import { BaseConstructor } from './base';
 require('./app.css');
 
-// console.log("directive=", directive);
-
-// const myComponent = (f) => directive((part) => {
-//   return f();
-// });
-
-// HINT: I not understad who call render when resolve.
 const fakeResource = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("boo"), 5000);
+  setTimeout(() => resolve("[some useful data]"), 5000);
 });
 
 const loading = html`<span>Loading...</span>`;
 
 const title = 'title';
 const header = html`
-  <h1>${isNg()} : ${
+  <h3> Fake slow resourse: ${
     until(
       fakeResource,
       loading
@@ -38,7 +31,8 @@ const sideeffected_value = function() {
 //     return promise;
 //   });
 
-export class App extends constructBase() {
+export const AppConstructor = (base) =>
+class App extends BaseConstructor(base) {
   static get is() {
     return 'lit-app';
   }
@@ -46,10 +40,8 @@ export class App extends constructBase() {
   get counter() { console.log("get counter"); return this._counter || 0;}
   set counter(v) { this._counter = v; this.invalidate(); }
   
-  // constructor() {
-  constructor(parent) {
-    super(parent);
-    // super();
+  constructor() {
+    super();
     this.value1 = 'value1';
     this.value2 = 'value2';
     this._sideeffectedcounter = 0;
@@ -73,7 +65,7 @@ export class App extends constructBase() {
 
   setValue2(e) {
     this.value2 = 'changed';
-    // this.invalidate();  // Call render
+    // No call render
   }
 
   get sideeffected_value() {
@@ -97,7 +89,10 @@ export class App extends constructBase() {
     });
   }
 
+  // TODO: Not worked with polyfills???
+  // To bad.
   disconnectedCallback() {
+    console.log("Stoping interval");
     clearInterval(this.freeRun_interval);
   }
 
@@ -138,7 +133,5 @@ export class App extends constructBase() {
       </div>
     `;
   }
-}
-// ${directive((part) => part.setValue((part.previousValue + 1) || 0))}
+};
 
-console.log(["App = ", App]);

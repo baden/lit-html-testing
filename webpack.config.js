@@ -1,7 +1,9 @@
+const webpack = require('webpack');
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // const isDev = process.env.NODE_ENV === 'dev';
 // const isProd = process.env.NODE_ENV === 'prod';
@@ -12,14 +14,15 @@ const extractCss = new ExtractTextPlugin({
     // disable: isDev
 });
 
-
 module.exports = {
   entry: {
-    index: './src/index.js'    
+    app: './src/index.js',
+    vendor: ['lit-html', 'lit-html/lib/lit-extended', 'lit-html/lib/until']
+    // webcomponents: ['@webcomponents/webcomponentsjs']
   },  
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: './bundle.js'
+    filename: './[name].js'
   },
   devtool: 'source-map',
   module: {
@@ -36,6 +39,11 @@ module.exports = {
   ]
   },
   plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor', filename: 'vendor.bundle.js'
+      // name: 'app', children: true
+    }),
     new UglifyJSPlugin({ 
       sourceMap: true,
       uglifyOptions: {
@@ -51,7 +59,14 @@ module.exports = {
     }),
     extractCss,
     new HtmlWebpackPlugin({
-      template: './src/index.html'
-    })
+      template: './src/index.html',
+      chunksSortMode: 'dependency',
+      // inject: false
+    }),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, './node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js'),
+      to: 'polyfills'
+    }, ]),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ]
 };

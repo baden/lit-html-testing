@@ -5,8 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>lit-html-testing</title>
-
 </head>
 <body>
+  <h2>App1</h2>
+  <lit-app></lit-app>
+  <h2>App2</h2>
+  <lit-app></lit-app>
+
+  <!-- <script type="text/javascript" src="vendor.bundle.js"></script> -->
+  <!-- <script type="text/javascript" src="app.js"></script> -->
+  <script>
+    var loadScript = function (src, cb) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.onload = cb;
+        document.head.appendChild(script);
+    }
+    window.onload = function() {
+      if (!('customElements' in window)) {
+        console.log("add webcomponents polyfills", window.bootstrapApplication);
+        loadScript('./polyfills/webcomponents-lite.js', () => {
+          console.log('polyfills is loaded');
+          window.bootstrapApplication();
+        });
+        //   window.bootstrapApplication()
+        //   // window.addEventListener('WebComponentsReady', window.bootstrapApplication())
+        // } 
+      } else {
+        console.log("native webcomponents is supported");
+        window.bootstrapApplication();
+      }  
+    }
+  </script>
 </body>
 </html>
