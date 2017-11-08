@@ -81,23 +81,25 @@ export class App extends constructBase() {
     return "local_" + this._sideeffectedcounter;
   }
 
-  // Demonstrate incorrect observable value
   freeRun(f) {
-    this.freeRunCounter = 0;  // will be reseted on each render() call
     return directive((part) => {
       // console.log(["freeRun", f, part, part.previousValue]);
-      
-      // will launch a new interval runner on each render() call
-      setInterval(() => {
-        // console.log(["freeRun_interval", f, part, part.previousValue]);
-        this.freeRunCounter = this.freeRunCounter + 1;
-        part.setValue(this.freeRunCounter);
-      }, 1000);
+      if(!('freeRun_interval' in this)) {
+        this.freeRunCounter = 0;
+        this.freeRun_interval = setInterval(() => {
+          // console.log(["freeRun_interval", f, part, part.previousValue]);
+          this.freeRunCounter = this.freeRunCounter + 1;
+          part.setValue(this.freeRunCounter);
+        }, 1000);
+      }
       // return html`<div>freRun: ${this.freeRunCounter}</div>`;
       return this.freeRunCounter;
     });
   }
 
+  disconnectedCallback() {
+    clearInterval(this.freeRun_interval);
+  }
 
   // TODO: Test isolated styles
   get style() {
