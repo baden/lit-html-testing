@@ -1,4 +1,5 @@
 import { html } from 'lit-html/lib/lit-extended';
+import { directive } from 'lit-html';
 import { until } from 'lit-html/lib/until';
 import { constructBase, isNg } from './base';
 require('./app.css');
@@ -36,7 +37,6 @@ const sideeffected_value = function() {
 //     part.setValue(content);
 //     return promise;
 //   });
-
 
 export class App extends constructBase() {
   static get is() {
@@ -81,7 +81,24 @@ export class App extends constructBase() {
     return "local_" + this._sideeffectedcounter;
   }
 
-  
+  // Demonstrate incorrect observable value
+  freeRun(f) {
+    this.freeRunCounter = 0;  // will be reseted on each render() call
+    return directive((part) => {
+      // console.log(["freeRun", f, part, part.previousValue]);
+      
+      // will launch a new interval runner on each render() call
+      setInterval(() => {
+        // console.log(["freeRun_interval", f, part, part.previousValue]);
+        this.freeRunCounter = this.freeRunCounter + 1;
+        part.setValue(this.freeRunCounter);
+      }, 1000);
+      // return html`<div>freRun: ${this.freeRunCounter}</div>`;
+      return this.freeRunCounter;
+    });
+  }
+
+
   // TODO: Test isolated styles
   get style() {
     return html`
@@ -114,9 +131,12 @@ export class App extends constructBase() {
       <div>
         Side effects: ${this.sideeffected_value} / ${sideeffected_value()}
       </div>
+      <div>
+        free run counter: ${this.freeRun('what?')}
+      </div>
     `;
   }
-
 }
+// ${directive((part) => part.setValue((part.previousValue + 1) || 0))}
 
 console.log(["App = ", App]);
