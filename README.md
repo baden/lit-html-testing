@@ -36,5 +36,7 @@ Or scan this code:
 
 * Chrome 62 (Linux Ubuntu x64)
 * Firefox 56 (Linux Ubuntu x64)
-* Safari (iPhone 5s, iOS 11.1) **strange 1 second delay after pressing a keys**
+* Safari (iPhone 5s, iOS 11.1)
+* Chrome (iPhone 5s, iOS 11.1)
+* Firefox ? (iPhone 5s, iOS 11.1) **slow without tap patch**
 

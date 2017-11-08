@@ -1,7 +1,13 @@
+import loader from '@webcomponents/webcomponentsjs';
 import { App } from './app.js';
-require('./app.css');
+import { bootstrap } from './base';
 
-const app = new App(document.body);
+// const app = new App(document.body);
+// const app = new App();
+
+bootstrap(App, document.body);
+
+// document.body.app
 
 window.addEventListener('touchend', function (e) {
     console.log(e);

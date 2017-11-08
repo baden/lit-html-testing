@@ -34,3 +34,14 @@ button {
   padding-right: 20px;
 }
 
+/* TODO: Not understanding shadow styling 
+lit-app::shadow * {
+  color: red !important;
+  background-color: green !important;
+}
+
+lit-app::shadow * {
+  color: red !important;
+  background-color: green !important;
+}
+*/

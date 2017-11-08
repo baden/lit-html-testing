@@ -7,7 +7,8 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 // const isProd = process.env.NODE_ENV === 'prod';
 
 const extractCss = new ExtractTextPlugin({
-    filename: "[name].[contenthash].css"
+    // filename: "[name].[contenthash].css"
+    filename: "app.css"
     // disable: isDev
 });
 
@@ -39,12 +40,12 @@ module.exports = {
       sourceMap: true,
       uglifyOptions: {
         // ie8: true,
-        // mangle: false,
+        mangle: false,
         compress: {
           passes: 3
         },
         output: {
-          // beautify: true
+          beautify: true
         }
       }
     }),
