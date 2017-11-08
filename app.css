@@ -34,5 +34,16 @@ button {
   padding-right: 20px;
 }
 
+/* TODO: Not understanding shadow styling 
+lit-app::shadow * {
+  color: red !important;
+  background-color: green !important;
+}
 
-/*# sourceMappingURL=index.06e375a0201030220ba37a09d7549f0d.css.map*/
+lit-app::shadow * {
+  color: red !important;
+  background-color: green !important;
+}
+*/
+
+/*# sourceMappingURL=app.css.map*/
