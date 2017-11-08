@@ -40,3 +40,7 @@ Or scan this code:
 * Chrome (iPhone 5s, iOS 11.1)
 * Firefox ? (iPhone 5s, iOS 11.1) **slow without tap patch**
 
+## Useful links
+
+* https://github.com/kenchris/lit-element
+* https://github.com/kenchris/lit-element-fiber-demo

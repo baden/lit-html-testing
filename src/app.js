@@ -89,13 +89,11 @@ class App extends BaseConstructor(base) {
     });
   }
 
-  // TODO: Not worked with polyfills???
-  // To bad.
   disconnectedCallback() {
     console.log("Stoping interval");
     clearInterval(this.freeRun_interval);
   }
-
+  
   // TODO: Test isolated styles
   get style() {
     return html`

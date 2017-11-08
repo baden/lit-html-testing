@@ -48,6 +48,8 @@ class Base extends base {
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     console.log(['attributeChanged', attrName, oldVal, newVal]);
+    // TODO: https://github.com/kenchris/lit-element/blob/master/src/lit-element.ts
+    // this.invalidate();
   }
 
 };
