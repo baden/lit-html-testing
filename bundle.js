@@ -335,12 +335,7 @@
         value: !0
     });
     var __WEBPACK_IMPORTED_MODULE_0__app_js__ = __webpack_require__(4), __WEBPACK_IMPORTED_MODULE_1__base__ = __webpack_require__(2);
-    console.log("bootstraping", document.body), Object(__WEBPACK_IMPORTED_MODULE_1__base__.a)(__WEBPACK_IMPORTED_MODULE_0__app_js__.a, document.body), 
-    window.addEventListener("touchend", function(e) {
-        console.log(e), e.preventDefault();
-        var event = new Event("click");
-        e.target.dispatchEvent(event);
-    });
+    console.log("bootstraping", document.body), Object(__WEBPACK_IMPORTED_MODULE_1__base__.a)(__WEBPACK_IMPORTED_MODULE_0__app_js__.a, document.body);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__ = __webpack_require__(1), __WEBPACK_IMPORTED_MODULE_1_lit_html__ = __webpack_require__(0), __WEBPACK_IMPORTED_MODULE_2_lit_html_lib_until__ = __webpack_require__(5), __WEBPACK_IMPORTED_MODULE_3__base__ = __webpack_require__(2);
