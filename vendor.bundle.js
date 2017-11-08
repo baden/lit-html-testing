@@ -9,8 +9,42 @@
         return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
         module.l = !0, module.exports;
     }
-    var installedModules = {};
-    __webpack_require__.m = modules, __webpack_require__.c = installedModules, __webpack_require__.d = function(exports, name, getter) {
+    var parentJsonpFunction = window.webpackJsonp;
+    window.webpackJsonp = function(chunkIds, moreModules, executeModules) {
+        for (var moduleId, chunkId, result, i = 0, resolves = []; i < chunkIds.length; i++) chunkId = chunkIds[i], 
+        installedChunks[chunkId] && resolves.push(installedChunks[chunkId][0]), installedChunks[chunkId] = 0;
+        for (moduleId in moreModules) Object.prototype.hasOwnProperty.call(moreModules, moduleId) && (modules[moduleId] = moreModules[moduleId]);
+        for (parentJsonpFunction && parentJsonpFunction(chunkIds, moreModules, executeModules); resolves.length; ) resolves.shift()();
+        if (executeModules) for (i = 0; i < executeModules.length; i++) result = __webpack_require__(__webpack_require__.s = executeModules[i]);
+        return result;
+    };
+    var installedModules = {}, installedChunks = {
+        1: 0
+    };
+    __webpack_require__.e = function(chunkId) {
+        function onScriptComplete() {
+            script.onerror = script.onload = null, clearTimeout(timeout);
+            var chunk = installedChunks[chunkId];
+            0 !== chunk && (chunk && chunk[1](new Error("Loading chunk " + chunkId + " failed.")), 
+            installedChunks[chunkId] = void 0);
+        }
+        var installedChunkData = installedChunks[chunkId];
+        if (0 === installedChunkData) return new Promise(function(resolve) {
+            resolve();
+        });
+        if (installedChunkData) return installedChunkData[2];
+        var promise = new Promise(function(resolve, reject) {
+            installedChunkData = installedChunks[chunkId] = [ resolve, reject ];
+        });
+        installedChunkData[2] = promise;
+        var head = document.getElementsByTagName("head")[0], script = document.createElement("script");
+        script.type = "text/javascript", script.charset = "utf-8", script.async = !0, script.timeout = 12e4, 
+        __webpack_require__.nc && script.setAttribute("nonce", __webpack_require__.nc), 
+        script.src = __webpack_require__.p + "./" + chunkId + ".js";
+        var timeout = setTimeout(onScriptComplete, 12e4);
+        return script.onerror = script.onload = onScriptComplete, head.appendChild(script), 
+        promise;
+    }, __webpack_require__.m = modules, __webpack_require__.c = installedModules, __webpack_require__.d = function(exports, name, getter) {
         __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
             configurable: !1,
             enumerable: !0,
@@ -25,10 +59,20 @@
         return __webpack_require__.d(getter, "a", getter), getter;
     }, __webpack_require__.o = function(object, property) {
         return Object.prototype.hasOwnProperty.call(object, property);
-    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 3);
+    }, __webpack_require__.p = "", __webpack_require__.oe = function(err) {
+        throw console.error(err), err;
+    }, __webpack_require__(__webpack_require__.s = 5);
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_exports__.f = function(result, container, partCallback = defaultPartCallback) {
+    function litTag(strings, values, templates, isSvg) {
+        const key = envCachesTemplates ? strings : strings.join("{{--uniqueness-workaround--}}");
+        let template = templates.get(key);
+        return void 0 === template && (template = new Template(strings, isSvg), templates.set(key, template)), 
+        new TemplateResult(template, values);
+    }
+    Object.defineProperty(__webpack_exports__, "__esModule", {
+        value: !0
+    }), __webpack_exports__.render = function(result, container, partCallback = defaultPartCallback) {
         let instance = container.__templateInstance;
         if (void 0 !== instance && instance.template === result.template && instance._partCallback === partCallback) return void instance.update(result.values);
         instance = new TemplateInstance(result.template, partCallback), container.__templateInstance = instance;
@@ -51,18 +95,15 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-    const envCachesTemplates = (t => t() == t())(() => s => s``), templates = new Map();
-    new Map(), __webpack_exports__.e = ((strings, ...values) => (function(strings, values, templates, isSvg) {
-        const key = envCachesTemplates ? strings : strings.join("{{--uniqueness-workaround--}}");
-        let template = templates.get(key);
-        return void 0 === template && (template = new Template(strings, !1), templates.set(key, template)), 
-        new TemplateResult(template, values);
-    })(strings, values, templates));
+    const envCachesTemplates = (t => t() == t())(() => s => s``), templates = new Map(), svgTemplates = new Map();
+    __webpack_exports__.html = ((strings, ...values) => litTag(strings, values, templates, !1)), 
+    __webpack_exports__.svg = ((strings, ...values) => litTag(strings, values, svgTemplates, !0));
     class TemplateResult {
         constructor(template, values) {
             this.template = template, this.values = values;
         }
     }
+    __webpack_exports__.TemplateResult = TemplateResult;
     const attributeMarker = `{{lit-${Math.random()}}}`, textRegex = />[^<]*$/, hasTagsRegex = /[^<]*/, attrOrTextRegex = new RegExp(`${attributeMarker}|\x3c!--_-lit-html-_--\x3e`);
     class TemplatePart {
         constructor(type, index, name, rawName, strings) {
@@ -70,6 +111,7 @@
             this.strings = strings;
         }
     }
+    __webpack_exports__.TemplatePart = TemplatePart;
     class Template {
         constructor(strings, svg = !1) {
             this.parts = [], this.svg = svg, this.element = document.createElement("template"), 
@@ -127,9 +169,10 @@
             return svg ? `<svg>${html}</svg>` : html;
         }
     }
+    __webpack_exports__.Template = Template;
     const getValue = (part, value) => (null != value && !0 === value.__litDirective && (value = value(part)), 
     null === value ? void 0 : value);
-    __webpack_exports__.d = getValue, __webpack_exports__.c = (f => (f.__litDirective = !0, 
+    __webpack_exports__.getValue = getValue, __webpack_exports__.directive = (f => (f.__litDirective = !0, 
     f));
     class AttributePart {
         constructor(instance, element, name, strings) {
@@ -146,7 +189,7 @@
             this.element.setAttribute(this.name, text);
         }
     }
-    __webpack_exports__.a = AttributePart;
+    __webpack_exports__.AttributePart = AttributePart;
     class NodePart {
         constructor(instance, startNode, endNode) {
             this.instance = instance, this.startNode = startNode, this.endNode = endNode, this._previousValue = void 0;
@@ -202,12 +245,13 @@
             for (;(node = startNode.nextSibling) !== this.endNode; ) node.parentNode.removeChild(node);
         }
     }
+    __webpack_exports__.NodePart = NodePart;
     const defaultPartCallback = (instance, templatePart, node) => {
         if ("attribute" === templatePart.type) return new AttributePart(instance, node, templatePart.name, templatePart.strings);
         if ("node" === templatePart.type) return new NodePart(instance, node, node.nextSibling);
         throw new Error(`Unknown part type ${templatePart.type}`);
     };
-    __webpack_exports__.b = defaultPartCallback;
+    __webpack_exports__.defaultPartCallback = defaultPartCallback;
     class TemplateInstance {
         constructor(template, partCallback = defaultPartCallback) {
             this._parts = [], this.template = template, this._partCallback = partCallback;
@@ -234,9 +278,12 @@
             return fragment;
         }
     }
+    __webpack_exports__.TemplateInstance = TemplateInstance;
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_exports__.b = /**
+    Object.defineProperty(__webpack_exports__, "__esModule", {
+        value: !0
+    }), __webpack_exports__.render = /**
  * @license
  * Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
  * This code may only be used under the BSD style license found at
@@ -250,11 +297,11 @@
  * http://polymer.github.io/PATENTS.txt
  */
     function(result, container) {
-        Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.f)(result, container, extendedPartCallback);
+        Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.render)(result, container, extendedPartCallback);
     };
     var __WEBPACK_IMPORTED_MODULE_0__lit_html_js__ = __webpack_require__(0);
-    __webpack_require__.d(__webpack_exports__, "a", function() {
-        return __WEBPACK_IMPORTED_MODULE_0__lit_html_js__.e;
+    __webpack_require__.d(__webpack_exports__, "html", function() {
+        return __WEBPACK_IMPORTED_MODULE_0__lit_html_js__.html;
     });
     const extendedPartCallback = (instance, templatePart, node) => {
         if ("attribute" === templatePart.type) {
@@ -264,29 +311,31 @@
             }
             if (templatePart.name.endsWith("$")) {
                 const name = templatePart.name.substring(0, templatePart.name.length - 1);
-                return new __WEBPACK_IMPORTED_MODULE_0__lit_html_js__.a(instance, node, name, templatePart.strings);
+                return new __WEBPACK_IMPORTED_MODULE_0__lit_html_js__.AttributePart(instance, node, name, templatePart.strings);
             }
             return new PropertyPart(instance, node, templatePart.rawName, templatePart.strings);
         }
-        return Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.b)(instance, templatePart, node);
+        return Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.defaultPartCallback)(instance, templatePart, node);
     };
-    class PropertyPart extends __WEBPACK_IMPORTED_MODULE_0__lit_html_js__.a {
+    __webpack_exports__.extendedPartCallback = extendedPartCallback;
+    class PropertyPart extends __WEBPACK_IMPORTED_MODULE_0__lit_html_js__.AttributePart {
         setValue(values, startIndex) {
             const s = this.strings;
             let value;
-            if (2 === s.length && "" === s[0] && "" === s[s.length - 1]) value = Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.d)(this, values[startIndex]); else {
+            if (2 === s.length && "" === s[0] && "" === s[s.length - 1]) value = Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.getValue)(this, values[startIndex]); else {
                 value = "";
-                for (let i = 0; i < s.length; i++) value += s[i], i < s.length - 1 && (value += Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.d)(this, values[startIndex + i]));
+                for (let i = 0; i < s.length; i++) value += s[i], i < s.length - 1 && (value += Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.getValue)(this, values[startIndex + i]));
             }
             this.element[this.name] = value;
         }
     }
+    __webpack_exports__.PropertyPart = PropertyPart;
     class EventPart {
         constructor(instance, element, eventName) {
             this.instance = instance, this.element = element, this.eventName = eventName;
         }
         setValue(value) {
-            const listener = Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.d)(this, value);
+            const listener = Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.getValue)(this, value);
             listener !== this._listener && (null == listener ? this.element.removeEventListener(this.eventName, this) : null == this._listener && this.element.addEventListener(this.eventName, this), 
             this._listener = listener);
         }
@@ -294,137 +343,16 @@
             "function" == typeof this._listener ? this._listener.call(this.element, event) : "function" == typeof this._listener.handleEvent && this._listener.handleEvent(event);
         }
     }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_exports__.c = function() {
-        return "customElements" in window ? "customElements is supported" : "customElements is not supported";
-    }, __webpack_exports__.b = function() {
-        const baseClass = ng ? HTMLElement : class {};
-        return class extends baseClass {
-            constructor(parent) {
-                super(), this.needsRender = !1, ng ? this.root = this.attachShadow({
-                    mode: "open"
-                }) : (console.log("parent=", parent), this.root = parent), ng || document.body.addEventListener("DOMNodeRemoved", this._handleRemove.bind(this));
-            }
-            _handleRemove(e) {
-                e.target === this.root && (console.log([ "Removed: ", e, this ]), this.disconnectedCallback());
-            }
-            async invalidate() {
-                this.needsRender || (this.needsRender = !0, await 0, this.needsRender = !1, Object(__WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__.b)(this.render(), this.root));
-            }
-            render() {
-                return __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__["a"]``;
-            }
-        };
-    }, __webpack_exports__.a = function(Root, destination) {
-        if (console.log("bootstraping", destination), console.log("Root.as=", Root.is), 
-        ng) {
-            customElements.define(Root.is, Root);
-            const el = document.createElement(Root.is);
-            destination.appendChild(el);
-        } else {
-            const el = document.createElement(Root.is);
-            new Root(el), destination.appendChild(el);
-        }
-    };
-    var __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__ = __webpack_require__(1);
-    const ng = "customElements" in window;
+    __webpack_exports__.EventPart = EventPart;
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     Object.defineProperty(__webpack_exports__, "__esModule", {
         value: !0
     });
-    var __WEBPACK_IMPORTED_MODULE_0__app_js__ = __webpack_require__(4), __WEBPACK_IMPORTED_MODULE_1__base__ = __webpack_require__(2);
-    console.log("bootstraping", document.body), Object(__WEBPACK_IMPORTED_MODULE_1__base__.a)(__WEBPACK_IMPORTED_MODULE_0__app_js__.a, document.body);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__ = __webpack_require__(1), __WEBPACK_IMPORTED_MODULE_1_lit_html__ = __webpack_require__(0), __WEBPACK_IMPORTED_MODULE_2_lit_html_lib_until__ = __webpack_require__(5), __WEBPACK_IMPORTED_MODULE_3__base__ = __webpack_require__(2);
-    __webpack_require__(6);
-    const fakeResource = new Promise((resolve, reject) => {
-        setTimeout(() => resolve("boo"), 5e3);
-    }), loading = __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__["a"]`<span>Loading...</span>`, header = __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__["a"]`
-  <h1>${Object(__WEBPACK_IMPORTED_MODULE_3__base__.c)()} : ${Object(__WEBPACK_IMPORTED_MODULE_2_lit_html_lib_until__.a)(fakeResource, loading)}</h1>
-`;
-    let _sideeffectedcounter = 0;
-    class App extends(Object(__WEBPACK_IMPORTED_MODULE_3__base__.b)()){
-        static get is() {
-            return "lit-app";
-        }
-        get counter() {
-            return console.log("get counter"), this._counter || 0;
-        }
-        set counter(v) {
-            this._counter = v, this.invalidate();
-        }
-        constructor(parent) {
-            super(parent), this.value1 = "value1", this.value2 = "value2", this._sideeffectedcounter = 0, 
-            this.counter = 0;
-        }
-        _inc(e) {
-            console.log("App:inc", e), this.counter++;
-        }
-        _dec(e) {
-            console.log("App:dec", e), this.counter--;
-        }
-        setValue1(e) {
-            this.value1 = "changed", this.invalidate();
-        }
-        setValue2(e) {
-            this.value2 = "changed";
-        }
-        get sideeffected_value() {
-            return this._sideeffectedcounter = this._sideeffectedcounter + 1, "local_" + this._sideeffectedcounter;
-        }
-        freeRun(f) {
-            return Object(__WEBPACK_IMPORTED_MODULE_1_lit_html__.c)(part => ("freeRun_interval" in this || (this.freeRunCounter = 0, 
-            this.freeRun_interval = setInterval(() => {
-                this.freeRunCounter = this.freeRunCounter + 1, part.setValue(this.freeRunCounter);
-            }, 1e3)), this.freeRunCounter));
-        }
-        disconnectedCallback() {
-            clearInterval(this.freeRun_interval);
-        }
-        get style() {
-            return __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__["a"]`
-      <link rel="stylesheet" href="./app.css">
-      <style>
-        button {
-          /*background-color: green;*/
-        }
-      </style>
-    `;
-        }
-        render() {
-            return __WEBPACK_IMPORTED_MODULE_0_lit_html_lib_lit_extended__["a"]`
-      ${this.style}
-      ${header}
-      <div class="content">
-        <button on-click="${e => this._dec(e)}">-</button>
-        <span>${this.counter}</span>
-        <button on-click="${e => this._inc(e)}">+</button>
-      </div>
-      <div>
-        <button on-click="${e => this.setValue1(e)}">Change me with invalidate</button>
-        Value: ${this.value1}
-      </div>
-      <div>
-        <button on-click="${e => this.setValue2(e)}">Change me without invalidate</button>
-        Value: ${this.value2}
-      </div>
-      <div>
-        Side effects: ${this.sideeffected_value} / ${"global_" + (_sideeffectedcounter += 1)}
-      </div>
-      <div>
-        free run counter: ${this.freeRun("what?")}
-      </div>
-    `;
-        }
-    }
-    __webpack_exports__.a = App, console.log([ "App = ", App ]);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
     var __WEBPACK_IMPORTED_MODULE_0__lit_html_js__ = __webpack_require__(0);
-    __webpack_exports__.a = ((promise, defaultContent) => Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.c)(part => (part.setValue(defaultContent), 
+    __webpack_exports__.until = ((promise, defaultContent) => Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__.directive)(part => (part.setValue(defaultContent), 
     promise)));
-}, function(module, exports) {} ]);
-//# sourceMappingURL=bundle.js.map
+}, , , function(module, exports, __webpack_require__) {
+    __webpack_require__(0), __webpack_require__(1), module.exports = __webpack_require__(2);
+} ]);
+//# sourceMappingURL=vendor.bundle.js.map
