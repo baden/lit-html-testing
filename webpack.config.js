@@ -3,7 +3,7 @@ const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // const isDev = process.env.NODE_ENV === 'dev';
 // const isProd = process.env.NODE_ENV === 'prod';
@@ -63,10 +63,10 @@ module.exports = {
       chunksSortMode: 'dependency',
       // inject: false
     }),
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, './node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js'),
-      to: 'polyfills'
-    }, ]),
+    // new CopyWebpackPlugin([{
+    //   from: path.resolve(__dirname, './node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js'),
+    //   to: 'polyfills'
+    // }, ]),
     new webpack.optimize.ModuleConcatenationPlugin()
   ]
 };

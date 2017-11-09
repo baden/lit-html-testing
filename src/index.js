@@ -19,10 +19,25 @@ import { bootstrap } from './base';
 
 // bootstrapApplication();
 
-window.bootstrapApplication = async function () {
-  console.log("bootstraping", document.body);
-  bootstrap(AppConstructor(HTMLElement), document.body);
-}
+
+window.onload = function() {
+  const bootstrapApplication = function (native) {
+    console.log("bootstraping", document.body);
+    bootstrap(AppConstructor(HTMLElement, native), document.body);
+  }
+
+  if (!('customElements' in window)) {
+    console.log("add webcomponents polyfills");
+    require("bundle-loader?lazy?name=webcomponents!@webcomponents/webcomponentsjs")(function(fileJsExports) {
+      bootstrapApplication(false);
+    });
+  } else {
+    console.log("native webcomponents is supported");
+    // require("bundle-loader!@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js")(function(fileJsExports) {
+      bootstrapApplication(true);
+    // });
+  }  
+};
 
 // const app = new App(document.body);
 // const app = new App();

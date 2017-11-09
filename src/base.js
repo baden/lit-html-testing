@@ -1,9 +1,10 @@
 import { html, render } from 'lit-html/lib/lit-extended';
 
-export const BaseConstructor = (base) =>
+export const BaseConstructor = (base, native) =>
 class Base extends base {
   constructor() {
     super();
+    this.__native = native;
     this.needsRender = false;
     this.root = this.attachShadow({mode: 'open'});
   }
@@ -53,22 +54,6 @@ class Base extends base {
   }
 
 };
-
-
-const AppConstructor = (base) => 
-  class App1 extends base {
-    constructor() {
-      super();
-    }
-    connectedCallback() {
-      console.log('connected');
-    }
-    disconnectedCallback() {
-    }
-    attributeChangedCallback(attrName, oldVal, newVal) {
-    }
-  };
-
 
 export function bootstrap(Root, destination) {
   customElements.define(Root.is, Root);

@@ -31,8 +31,8 @@ const sideeffected_value = function() {
 //     return promise;
 //   });
 
-export const AppConstructor = (base) =>
-class App extends BaseConstructor(base) {
+export const AppConstructor = (base, native) =>
+class App extends BaseConstructor(base, native) {
   static get is() {
     return 'lit-app';
   }
@@ -106,9 +106,18 @@ class App extends BaseConstructor(base) {
     `;
   }
   
+  get isNative() {
+    if(this.__native) {
+      return html`<span>native</span>`;
+    } else {
+      return html`<span>emulating</span>`;
+    }
+  }
+  
   render() {
     return html`
       ${this.style}
+      <div>Webcomponents: ${this.isNative}</div>
       ${header}
       <div class="content">
         <button on-click="${e => this._dec(e)}">-</button>
